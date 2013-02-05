@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html>
+<head>
+	<title>jQuery Editable Hints Demo</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.editablehints.js"></script>
+	<link rel="stylesheet" type="text/css" href="jquery.editablehints.css" />
+	<style type="text/css">
+		body
+		{
+			background: #f2f2f2;
+			color: #222;
+			font-family: "Georgia", serif;
+			padding: 10px 50px;
+		}
+
+		#inlineEditor
+		{
+			text-shadow: 0 1px 0 #eee;
+			outline: none;
+			width: 600px;
+			height: 400px;
+			overflow: auto;
+			outline: none;
+			padding: 30px;
+			margin: 30px auto;
+		  	background: #fff;
+		  	max-width: 600px;
+		 	-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+		  	-moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+		  	box-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+		}
+
+		.info
+		{
+			margin: 50px 0;
+			background: #fff;
+			padding: 10px;
+		}
+
+		footer
+		{
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h2>jQuery Editable Hints Plugin</h2>
+ 	<div id="inlineEditor" class="shadow" contenteditable="true" spellcheck="on">
+ 		<h1>Welcome</h1>
+ 		<p>Feel free to type something here.</p>
+ 		<p>Type @ to trigger hints.</p>
+ 		<p>Select Google or Gorilla to insert link</p>
+ 		<p>select Tarzan, Titanic or Tornado for sentence</p>
+ 		<p>Select Papaya, pineapple or pumpkin for formated text</p>
+ 	</div>
+
+ 	<div class="info">
+	 	<h3>Usage</h3>
+		<p><code>$.editablehints([config]);</code></p>
+		<p>Configuration for editor and hints must be defined</p>
+	</div>
+
+	<div class="info">
+		<h3>Config</h3>
+		<p><code>editor</code> : [Required] ID for the content editable DOM element</p>
+		<p><code>hints</code> : [Required] An array of object with properties of <em>text</em> and <em>value</em>, a text is use to suggest hints as user typing, a value is use to insert into the editor when selected, can be string or HTML string</p>
+		<p><code>className</code> : Class name to be use for the popup dialog, can be change if it conflict with existing class</p>
+		<p><code>trigger</code> : A character that trigger the hints, defaulted to @</p>
+		<p><code>hintsBoxOffsetX/hintsBoxOffsetY</code> : Additional adjustment to the popup position, negative value move it up/left</p>
+	</div>
+
+	<div class="info">
+		<h3>Known issues</h3>
+		<ul>
+			<li>Does not work in RTE plugin that uses iframe</li>
+			<li>Popup is not in proper place on Firefox, and is out of place for IE</li>
+			<li>Inserting from popup menu in middle of other text on IE will generate link</li>
+			<li>Scrolling and clicking other stuff when popup is showing, will unbind the key for selecting the popup menu</li>
+		</ul>
+	</div>
+
+	<footer>Copyright (c) 2013 Stephen Saw</footer>
+	
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			$('#inlineEditor').focus();
+
+			$.editablehints( { 'editor': 'inlineEditor', 
+				'hints': 
+				[
+					{ text: 'Apple', value: 'Apple' },
+					{ text: 'Acorn', value: 'Acorn' },
+					{ text: 'Animal', value: 'Animal' },
+					{ text: 'Banana', value: 'Banana' },
+					{ text: 'Google', value: '<a href="http://www.google.com">Google</a>' },
+					{ text: 'Gorilla', value: '<a href="http://gorilla.com">Gorilla</a>' },
+					{ text: 'Tarzan', value: 'Tarzan is naked' },
+					{ text: 'Titanic', value: 'Titanic hit iceberg' },
+					{ text: 'Tornado', value: 'Tornado spin' },
+					{ text: 'Papaya', value: '<strong>Papaya</strong>' },
+					{ text: 'Pineapple', value: '<u>Pineapple</u>' },
+					{ text: 'Pumpkin', value: '<em>Pumpkin</em>' }
+				],
+				'hintsBoxOffsetY': 0
+			});
+		});
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+div.editablehints {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+	max-height: 150px;
+	min-width: 100px;
+	position: fixed;
+	overflow: hidden;
+	overflow-y: auto;
+	background: #fff;
+	padding: 5px;
+	display: none;
+	font-family: monospace;
+	z-index: 10;
+}
+
+div.editablehints ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	outline: none;
+	font-size: smaller;
+}
+
+div.editablehints ul li {
+	padding: 1px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+div.editablehints ul li:focus {
+	outline: none;
+}
+
+div.editablehints ul li.selected {
+	background: #08f;
+	outline: none;
+	padding: 1px;
+	color: #fff;
+}

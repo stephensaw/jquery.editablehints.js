@@ -1,0 +1,3 @@
+jquery.editablehints.js
+=======================
+
