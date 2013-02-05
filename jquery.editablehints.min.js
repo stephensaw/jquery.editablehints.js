@@ -1,7 +1,7 @@
 /*
  * Editable Hints jQuery Plugin
  * @author Stephen Saw
- * @version 0.1
+ * @version 1.0
  *
  * Copyright (c) 2013 Stephen Saw <stephen@stephensaw.me>
  * Released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
