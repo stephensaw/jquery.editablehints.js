@@ -1,7 +1,7 @@
 /*
  * Editable Hints jQuery Plugin
  * @author Stephen Saw
- * @version 1.0.0
+ * @version 1.0.1
  *
  * Copyright (c) 2013 Stephen Saw <stephen@stephensaw.me>
  * Released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
@@ -72,44 +72,49 @@
 
         //calculate offset
         this.getOffset = function( el ) {
-            var _x   = 0,
-                _y   = 0,
-                _top;
+            var parentScrollTop  = editor.scrollTop(),
+                parentScrollLeft = editor.scrollLeft(),
+                elOffsetTop      = el.offsetTop,
+                elOffsetLeft     = el.offsetLeft;
 
-            while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-                _top = document.documentElement.scrollTop || el.scrollTop;
-                _x += el.offsetLeft - el.scrollLeft;
-                _y += el.offsetTop - _top;
-                el = el.offsetParent;
-            }
-
-            return { top: _y, left: _x };
+            return { top: elOffsetTop - parentScrollTop, left: elOffsetLeft - parentScrollLeft };
         };
 
         //get cursor coords
         this.getCursorPosition = function () {
-            var selection, range, newRange, offset;
+            var span, selection, range, offset, offsetHeight;
 
             if ( window.getSelection ) {
+                var newRange;
+
                 selection = document.getSelection();
                 range = selection.getRangeAt( 0 );
                 newRange = document.createRange();
-                $span = $( "<span/>" ).css('position', 'absolute');
+
+                span = $( '<span>|</span>' ).css( { 'position': 'absolute', 'visibility': 'hidden' } );
 
                 newRange.setStart( selection.focusNode, range.endOffset );
-                newRange.insertNode( $span[0] );
-                
-                offset = me.getOffset( $span[0] );
+                newRange.insertNode( span[0] );
+     
+                offset = me.getOffset( span[0] );
+                offsetHeight = span[0].offsetHeight;
 
-                $span.remove();
+                span.remove();
 
-                return { x: offset.left, y: offset.top };
+                return { x: offset.left, y: offset.top + offsetHeight };
             } else if ( document.selection && document.selection.createRange ) {
-                var node   = me.getSelectedNode();
-                
-                offset = me.getOffset( node );
+                range = document.selection.createRange();
 
-                return { x: offset.left, y: offset.top };
+                range.pasteHTML( '<span class="' + settings.className + '_hint">|</span>' );
+
+                span = editor.find( '.' + settings.className + '_hint' );
+
+                offset = me.getOffset( span[0] );
+                offsetHeight = span.get(0).offsetHeight;
+
+                span.remove();
+
+                return { x: offset.left, y: offset.top + offsetHeight };
             } else
                 throw 'Implementation not supported';
         };
@@ -301,9 +306,9 @@
 
         hintsBox = div;
 
-        //binding for navigation arrow
+        //bind the event
         editor.keydown( function( e ) {
-            var keycode  = e.keyCode || e.which;
+            var keycode = e.keyCode || e.which;
 
             if ( isHinting ) {
                 var hintList = hintsBox.find( 'ul > li.selected' );
@@ -344,11 +349,6 @@
                         break;
                 }
             }
-        });
-
-        //bind the event
-        editor.keyup( function( e ) {
-            var keycode = e.keyCode || e.which;
 
             if ( keycode !== 38 && keycode !== 40 && keycode !== 13 && keycode !== 27 && keycode !== 39 && keycode !== 37 )
                 setTimeout( me.doSearch, 1 );
